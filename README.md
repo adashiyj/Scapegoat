@@ -1,5 +1,5 @@
 # Data Source
-We derived Trump's tweets from an open-source [Trump Twitter Archive](https://www.thetrumparchive.com/?resultssortOption=%22Latest%22).
+We derived Trump's tweets from the open-source [Trump Twitter Archive](https://www.thetrumparchive.com/?resultssortOption=%22Latest%22).
 ### Inter-coder reliability step 1
 ### Inter-coder reliability step 2
 ### Actual coding
