@@ -8,6 +8,7 @@ editor: visual
 ## Load Packages & Set Seed
 
 ```{r}
+
 library(tidyverse)
 library(ggplot2)
 library(DescTools)
@@ -16,6 +17,7 @@ library(knitr)
 library(gtExtras)
 library(REAT)
 library(boot)
+library(grafify)
 set.seed(7)
 ```
 
@@ -291,9 +293,11 @@ RQ2aplot <- resat2 |>
   filter(Evaluation == "Negative" & Target == "Individual") |> 
   ggplot(aes(x = Time_Stamp, fill = fct_infreq(Specific_Individual))) + 
   geom_bar(position= "dodge",  width = 0.4) +
-  scale_fill_discrete(labels = 
+  scale_fill_grafify(
+    palette = "bright",
+    labels = 
                         c("Hillary Clinton", "Barack Obama", "Other Dems", "Other", "Other Reps")) +
-  labs(
+    labs(
     title = "RQ2a", 
     x = "Inauguration", 
     fill = "Individuals"
@@ -396,9 +400,9 @@ RQ2bplot <- resat2 |>
   filter(Evaluation == "Positive" & Target == "Individual") |> 
   ggplot(aes(x = Time_Stamp, fill = fct_infreq(Specific_Individual))) + 
   geom_bar(position= "dodge",  width = 0.4) +
-  #scale_fill_discrete(labels = 
-                        #c()) +
-  labs(
+  scale_fill_grafify(
+    palette = "bright")+
+    labs(
     title = "RQ2b", 
     x = "Inauguration", 
     fill = "Individuals"
@@ -408,7 +412,7 @@ RQ2bplot <- resat2 |>
         legend.key.height = unit(0.2, 'cm'))
   
 
-ggsave("RQ2bplot.png", plot = RQ2aplot, path = '/Users/lukefischer/Desktop', width = 8, height= 3, units = "in")
+ggsave("RQ2bplot.png", plot = RQ2bplot, path = '/Users/lukefischer/Desktop', width = 8, height= 3, units = "in")
 
 ```
 
@@ -521,8 +525,8 @@ RQ3aplot <- resat2 |>
   filter(Evaluation == "Negative" & Target == "Collective") |> 
   ggplot(aes(x = Time_Stamp, fill = fct_infreq(Specific_Collective))) + 
   geom_bar(position= "dodge",  width = 0.4) +
-  #scale_fill_discrete(labels = 
-                        #c()) +
+  scale_fill_grafify(
+    palette = "bright")+
   labs(
     title = "RQ3a", 
     x = "Inauguration", 
@@ -640,8 +644,8 @@ RQ3bplot <- resat2 |>
   filter(Evaluation == "Positive" & Target == "Collective") |> 
   ggplot(aes(x = Time_Stamp, fill = fct_infreq(Specific_Collective))) + 
   geom_bar(position= "dodge",  width = 0.4) +
-  #scale_fill_discrete(labels = 
-                        #c()) +
+ scale_fill_grafify(
+    palette = "bright")+
   labs(
     title = "RQ3b", 
     x = "Inauguration", 
@@ -652,7 +656,7 @@ RQ3bplot <- resat2 |>
         legend.key.height = unit(0.2, 'cm'))
 
 
-ggsave("RQ3bplot.png", plot = RQ3aplot, path = '/Users/lukefischer/Desktop', width = 8, height= 3, units = "in")
+ggsave("RQ3bplot.png", plot = RQ3bplot, path = '/Users/lukefischer/Desktop', width = 8, height= 3, units = "in")
 ```
 
 Gini Coefficient Before and After
@@ -707,16 +711,26 @@ resat2 |>
   group_by(Time_Stamp) |> 
   count(Target) |>
   mutate(Proportion = n/sum(n))
+
 ```
 
 Cross Tab
 
 ```{r}
-resat2 |> 
+missing4a <- tibble(
+  Time_Stamp = "Before", 
+  Target = "Network", 
+  n = 0)
+
+complete4a <- resat2 |> 
   filter(Evaluation == "Positive") |> 
   group_by(Time_Stamp) |> 
   count(Target) |> 
-  ungroup() |> 
+  ungroup() 
+
+complete4a<- bind_rows(complete4a, missing4a)
+
+complete4a|> 
   pivot_wider(
     names_from = Target, 
     values_from = n
@@ -738,7 +752,7 @@ RQ4aplot<- resat2 |>
     x = "Inauguration", 
     y = "Proportion" 
   ) +
-  scale_fill_brewer(palette = "Set2")+
+  scale_fill_grafify(palette = "bright", guide = guide_legend(reverse = TRUE))+
   theme(plot.title.position = "plot",           
         legend.key.width = unit(1, 'cm'), 
         legend.key.height = unit(0.2, 'cm'))
@@ -789,7 +803,7 @@ RQ4bplot<- resat2 |>
     x = "Inauguration", 
     y = "Proportion" 
   ) +
-  scale_fill_brewer(palette = "Set2")+
+  scale_fill_grafify(palette = "bright", guide = guide_legend(reverse = TRUE))+
   theme(plot.title.position = "plot",           
         legend.key.width = unit(1, 'cm'), 
         legend.key.height = unit(0.2, 'cm'))
@@ -816,7 +830,7 @@ Cross Tab
 
 ```{r}
 resat2 |> 
-  filter(Evaluation == 1) |> 
+  filter(Evaluation == "Positive") |> 
   group_by(Time_Stamp) |> 
   count(Topic) |> 
   ungroup() |> 
@@ -835,13 +849,13 @@ RQ5aplot <- resat2 |>
   filter(Evaluation == "Positive") |> 
   ggplot(aes(x = Time_Stamp, fill = Topic)) + 
   geom_bar(position= "fill",  width = 0.4) + 
-  coord_flip()+ 
+  coord_flip()+
   labs(
     title = "RQ5a",
     x = "Inauguration", 
     y = "Proportion" 
   ) +
-  scale_fill_brewer(palette = "Set2") +
+  scale_fill_grafify(palette= "bright", guide = guide_legend(reverse = TRUE)) +
   annotate(
     geom = "label", 
     x = "After", 
@@ -1042,7 +1056,7 @@ RQ5bplot <- resat2 |>
     x = "Inauguration", 
     y = "Proportion" 
   ) +
-  scale_fill_brewer(palette = "Set2") +
+  scale_fill_grafify(palette = "bright", guide = guide_legend(reverse = TRUE)) +
   annotate(
     geom = "label", 
     x = "After", 
