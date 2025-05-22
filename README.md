@@ -1,4 +1,5 @@
-# Data Source 📃
+# Content Analysis Project: The Politics of Responsibility 🐐
+## Data source 📃
 We derived Trump's tweets from the open-source [Trump Twitter Archive](https://www.thetrumparchive.com/?resultssortOption=%22Latest%22).
 ## Inter-coder Reliability Check (2 steps)✅
 - Time range: 2018-06-01 to 2018-10-01
