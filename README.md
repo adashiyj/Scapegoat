@@ -1,5 +1,5 @@
 # The Politics of Responsibility 🐐
-- Quantitative content analysis project conducted by Luke, Mare, Francesco, and Ada
+Quantitative content analysis project conducted by Luke, Mare, Francesco, and Ada
 ## Data source 📃
 We derived Trump's tweets from the open-source [Trump Twitter Archive](https://www.thetrumparchive.com/?resultssortOption=%22Latest%22).
 ## Inter-coder Reliability Check (2 steps)✅
