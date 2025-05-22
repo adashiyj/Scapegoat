@@ -593,7 +593,7 @@ bind_cols(match_set, improvement_external) |>
   filter(dfbeta.units < 0) 
 
 
-### Social
+### Social Policies and Welfare
 pivot_social <- dataset |> 
   select(Coder_ID, Attribution_Number, Post_ID, SocialPolicies_1) |> 
   group_by(Post_ID, Attribution_Number) |> 
