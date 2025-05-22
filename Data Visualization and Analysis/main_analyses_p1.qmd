@@ -1,0 +1,138 @@
+---
+title: "Scapegoat"
+author: "Ada"
+format: html
+editor: visual
+---
+
+## Main Statistical Analyses
+
+```{r}
+# Cleaning the environment
+rm(list = ls())
+gc()
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+df <- read.csv("clean_data.csv")
+df
+```
+
+```{r}
+# Recode ineligible responsibility attributions as "No" responsibility attributions
+df_recoded <- df %>%
+  mutate(Attribution_Presence = case_when(
+    Sender_Relevance == 0 ~ 0,
+    is.na(Evaluation) ~ 0,
+    is.na(Topic) ~ 0,
+    TRUE ~ Attribution_Presence
+  ))
+
+# Recode other columns with NAs when there is "No" responsibility attributions
+df_recoded <- df_recoded %>%
+  mutate(across(
+    .cols = -c(Attribution_Presence, Time_Stamp, Text, Date, Post_ID), # except these columns
+    .fns = ~ ifelse(Attribution_Presence == 0, NA, .)
+  ))
+
+df_recoded
+```
+
+**RQ1a: To what extent does the proportion of posts containing responsibility attributions for voting issues vary?**
+
+```{r}
+# Identify posts instead of individual responsibility attributions
+df_unique <- df_recoded %>%
+  group_by(Post_ID) %>%
+  summarise(Attribution_Presence = as.integer(any(Attribution_Presence == 1)), Time_Stamp = unique(Time_Stamp))
+
+print(df_unique)
+
+# Step 1: Creating a contingency table
+contingency_table_1a <- table(df_unique$Time_Stamp, df_unique$Attribution_Presence)
+contingency_table_1a
+
+# Step 2: Applying the chi-square test function
+chi_square_test_1a <- chisq.test(contingency_table_1a)
+chi_square_test_1a
+```
+
+**RQ1b: To what extent does the proportion of responsibility attribution evaluations vary?**
+
+```{r}
+# Step 1: Creating a contingency table
+contingency_table_1b <- table(df_recoded$Time_Stamp, df_recoded$Evaluation)
+contingency_table_1b
+
+# Step 2: Applying the chi-square test function
+chi_square_test_1b <- chisq.test(contingency_table_1b)
+chi_square_test_1b
+```
+
+**RQ2a:** **To what extent does the proportional distribution of targets for blame responsibility attributions vary?**
+
+```{r}
+# Filter the df with negative responsibility attributions only
+df_negative <- df_recoded %>% 
+  filter(Evaluation == 0)
+
+# Step 1: Creating a contingency table
+contingency_table_4b <- table(df_negative$Time_Stamp, df_negative$Target)
+contingency_table_4b
+
+# Step 2: Applying the chi-square test function
+chi_square_test_4b <- chisq.test(contingency_table_4b)
+chi_square_test_4b
+```
+
+**RQ2d: To what extent does the proportional distribution of voting issues for blame responsibility attributions vary?**
+
+```{r}
+# Filter the df with negative responsibility attributions only
+df_negative <- df_recoded %>% 
+  filter(Evaluation == 0)
+
+# Step 1: Creating a contingency table
+contingency_table_5b <- table(df_negative$Time_Stamp, df_negative$Topic)
+contingency_table_5b
+
+# Step 2: Applying the fisher test function
+fisher_test_5b <- fisher.test(contingency_table_5b)
+fisher_test_5b
+```
+
+**RQ3a:** **To what extent does the proportional distribution of targets for credit responsibility attributions vary?**
+
+```{r}
+# Filter the df with positive responsibility attributions only
+df_positive <- df_recoded %>% 
+  filter(Evaluation == 1)
+
+# Step 1: Creating a contingency table
+contingency_table_4a <- table(df_positive$Time_Stamp, df_positive$Target)
+contingency_table_4a
+
+# Step 2: Applying the fisher test function
+fisher_test_4a <- fisher.test(contingency_table_4a)
+fisher_test_4a
+```
+
+**RQ3d: To what extent does the proportional distribution of voting issues for credit responsibility attributions vary?**
+
+```{r}
+# Filter the df with positive responsibility attributions only
+df_positive <- df_recoded %>% 
+  filter(Evaluation == 1)
+
+# Step 1: Creating a contingency table
+contingency_table_5a <- table(df_positive$Time_Stamp, df_positive$Topic)
+contingency_table_5a
+
+# Step 2: Applying the fisher test function
+fisher_test_5a <- fisher.test(contingency_table_5a)
+fisher_test_5a
+```
