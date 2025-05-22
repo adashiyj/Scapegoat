@@ -14,4 +14,5 @@ We derived Trump's tweets from the open-source [Trump Twitter Archive](https://w
 - Raw data, data wrangling, and preprocessed data can be found in this [folder](https://github.com/adashiyj/Scapegoat/tree/main/Actual%20Coding/Data%20Wrangling)
 - Main analyses for RQ1a&b, RQ2a&d, RQ3a&d can be found [here](https://github.com/adashiyj/Scapegoat/blob/main/Data%20Visualization%20and%20Analysis/main_analyses_p1.qmd)
 - Main analyses for RQ2b&c and RQ3b&c, as well as robustness check for all RQs see [here]()
+- Note: for the order of RQs in the files for main analyses did not follow the chronological order!
 
