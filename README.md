@@ -9,5 +9,6 @@ We derived Trump's tweets from the open-source [Trump Twitter Archive](https://w
 - Sampling technique: systematic random sampling
 - Python codes for [sampling and randomization](https://github.com/adashiyj/Scapegoat/blob/main/Actual%20Coding/Sampling/sampling.ipynb)
 ## Statistical analyses ✅
-- 
+- Raw data, data wrangling, and preprocessed data can be found in this (folder)[https://github.com/adashiyj/Scapegoat/tree/main/Actual%20Coding/Data%20Wrangling]
+- Main analyses for RQ1a&b, RQ2a&d, RQ3a&d can be found (here)[]
 
